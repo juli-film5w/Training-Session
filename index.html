@@ -8,6 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Training">
 <meta name="theme-color" content="#15181C">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -20,8 +22,7 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;background:var(--iron)}
   body{
-    font-family:'IBM Plex Mono',ui-monospace,monospace;
-    color:var(--chalk);
+    font-family:'IBM Plex Mono',ui-monospace,monospace;color:var(--chalk);
     max-width:520px;margin:0 auto;
     padding:calc(env(safe-area-inset-top) + 14px) 12px calc(env(safe-area-inset-bottom) + 40px);
   }
@@ -57,6 +58,7 @@
   .step{width:52px;height:52px;flex:none;border:none;border-radius:10px;background:var(--plate-2);
     color:var(--chalk);font-size:26px;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace}
   .step:active{background:var(--signal);color:#15181C}
+  .step.klein{width:42px;height:42px;font-size:21px}
   .wert{flex:1;text-align:center;min-width:0}
   .wert .zahl{font-size:32px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
   .wert .einheit{font-size:11px;color:var(--muted);margin-left:3px}
@@ -69,24 +71,55 @@
     color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace}
   .satz.ok{background:var(--done);border-color:var(--done);color:#15181C}
   .satz.hart{background:var(--hart);border-color:var(--hart);color:#15181C}
+  .wdhzeile{display:flex;align-items:center;gap:8px;margin-top:9px}
+  .wdhzeile .snr{font-size:11px;color:var(--muted);width:24px;flex:none}
+  .wdhzeile .zahl{font-size:24px;font-weight:700;flex:1;text-align:center;font-variant-numeric:tabular-nums}
+  .wdhzeile .satz{flex:none;width:104px;height:42px;font-size:12px}
   .legende{font-size:10px;color:var(--muted);margin-top:7px;letter-spacing:.03em}
 
+  .timer{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 78px);z-index:5;
+    display:none;align-items:center;gap:10px;background:var(--plate-2);
+    border:2px solid var(--signal);border-radius:12px;padding:10px 12px;margin-top:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,.5)}
+  .timer.an{display:flex}
+  .timer .uhr{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+  .timer .txt{flex:1;font-size:11px;color:var(--muted);line-height:1.3}
+  .timer button{border:1px solid var(--line);background:var(--plate);color:var(--chalk);
+    border-radius:8px;padding:9px 11px;font-size:12px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
+
   .speichern{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 10px);width:100%;padding:18px 0;
-    margin-top:16px;border:none;border-radius:12px;background:var(--signal);color:#15181C;cursor:pointer;
+    margin-top:12px;border:none;border-radius:12px;background:var(--signal);color:#15181C;cursor:pointer;
     font-family:'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;
     font-size:22px;font-weight:700;letter-spacing:.08em;box-shadow:0 6px 20px rgba(0,0,0,.5)}
   .speichern.ok{background:var(--done)}
 
-  details{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
-  summary{font-size:12px;color:var(--muted);letter-spacing:.06em;cursor:pointer;list-style:none}
+  details{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+  summary{font-size:12px;color:var(--muted);letter-spacing:.06em;cursor:pointer;list-style:none;padding:4px 0}
   summary::-webkit-details-marker{display:none}
   .eintrag{border-top:1px solid var(--line);padding:9px 0;font-size:12px}
   .eintrag b{font-family:'Barlow Condensed',sans-serif;font-size:15px;letter-spacing:.05em}
   .eintrag span{color:var(--muted)}
-  .werkzeug{display:flex;gap:8px;margin-top:12px}
-  .werkzeug button{flex:1;padding:11px 0;border:1px solid var(--line);background:var(--plate);
+
+  .kurve{border-top:1px solid var(--line);padding:12px 0 4px}
+  .kurve .kn{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;font-size:15px;
+    letter-spacing:.05em;display:flex;justify-content:space-between;align-items:baseline}
+  .kurve .kv{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+  .kurve svg{display:block;width:100%;height:54px;margin-top:6px}
+
+  .bearb{background:var(--plate);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:9px}
+  .bearb input,.bearb select{width:100%;background:var(--plate-2);border:1px solid var(--line);
+    color:var(--chalk);border-radius:7px;padding:9px;font-size:13px;
+    font-family:'IBM Plex Mono',monospace;margin-top:6px}
+  .bearb .reihe{display:flex;gap:6px}
+  .bearb .reihe > *{flex:1}
+  .bfeld{font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.05em}
+  .werkzeug{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .werkzeug button{flex:1;min-width:120px;padding:11px 0;border:1px solid var(--line);background:var(--plate);
     color:var(--muted);border-radius:9px;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
+  .werkzeug button.warnen{color:var(--hart);border-color:var(--hart)}
   .hinweis{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.5}
+  .entwurfhinweis{background:var(--plate-2);border:1px solid var(--signal);border-radius:9px;
+    padding:9px 11px;font-size:11px;line-height:1.4;margin-bottom:12px;color:var(--chalk)}
 </style>
 </head>
 <body>
@@ -95,6 +128,8 @@
   <h1 id="titel">Training</h1>
   <div class="datum" id="datum"></div>
 </div>
+
+<div id="entwurfbox"></div>
 
 <div class="switch">
   <button id="btnA" onclick="planWaehlen('A')">Plan A</button>
@@ -112,39 +147,71 @@
 
 <div id="uebungen"></div>
 
+<div class="timer" id="timerbox">
+  <div class="uhr" id="uhr">1:30</div>
+  <div class="txt">Satzpause</div>
+  <button onclick="timerPlus(30)">+30s</button>
+  <button onclick="timerStop()">Fertig</button>
+</div>
+
 <button class="speichern" id="speicherbtn" onclick="speichern()">Training speichern</button>
 
 <details>
   <summary>▸ Letzte Trainings</summary>
   <div id="verlauf"></div>
+</details>
+
+<details>
+  <summary>▸ Fortschritt</summary>
+  <div id="kurven"></div>
+</details>
+
+<details id="bearbeiten">
+  <summary>▸ Übungen bearbeiten</summary>
+  <div class="bfeld">Änderungen gelten für den gerade gewählten Plan.</div>
+  <div id="bearbliste"></div>
+  <div class="werkzeug">
+    <button onclick="uebungHinzu()">+ Übung hinzufügen</button>
+    <button onclick="bearbSpeichern()">Übungen sichern</button>
+  </div>
+  <div class="werkzeug">
+    <button class="warnen" onclick="zuruecksetzen()">Auf Standardplan zurücksetzen</button>
+  </div>
+</details>
+
+<details>
+  <summary>▸ Sicherung</summary>
   <div class="werkzeug">
     <button onclick="sichern()">Daten kopieren</button>
     <button onclick="wiederherstellen()">Daten einfügen</button>
   </div>
+  <div class="bfeld">Kopierten Text in eine Notiz einfügen — das ist deine Sicherung.</div>
 </details>
 
 <div class="hinweis">
-  Aufwärmen: 8 Min Rudergerät &middot; Satzpause 90 Sek<br>
-  Satzfeld tippen: 1× sauber &middot; 2× unsauber &middot; 3× zurücksetzen
+  Aufwärmen: 8 Min Rudergerät<br>
+  Satzfeld tippen: 1× sauber &middot; 2× unsauber &middot; 3× zurücksetzen<br>
+  &minus;/+ tippen = 1 Schritt &middot; gedrückt halten = schnell zählen
 </div>
 
 <script>
-const PLAENE = {
+/* ---------- Standardpläne ---------- */
+const STANDARD = {
   A: [
-    {id:'klimm',  name:'Klimmzüge',          schema:'Rotation',       wert:24, step:1,   einheit:'Wdh ges.',    saetze:1},
-    {id:'bank',   name:'Bankdrücken',        schema:'3 × 8',          wert:30, step:2.5, einheit:'kg + Stange', saetze:3},
-    {id:'presse', name:'Beinpresse',         schema:'3 × 12',         wert:81, step:5,   einheit:'kg', saetze:3},
-    {id:'beuger', name:'Beinbeuger',         schema:'3 × 12',         wert:32, step:4,   einheit:'kg', saetze:3},
-    {id:'abd',    name:'Abduktor',           schema:'3 × 12',         wert:45, step:4,   einheit:'kg', saetze:3},
-    {id:'crunch', name:'Crunchmaschine',     schema:'3 × 12',         wert:27, step:4,   einheit:'kg', saetze:3}
+    {id:'klimm',  name:'Klimmzüge',          schema:'Rotation',       wert:8,  einheit:'Wdh', saetze:3, typ:'wdh'},
+    {id:'bank',   name:'Bankdrücken',        schema:'3 × 8',          wert:30, einheit:'kg + Stange', saetze:3, typ:'gewicht'},
+    {id:'presse', name:'Beinpresse',         schema:'3 × 12',         wert:81, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'beuger', name:'Beinbeuger',         schema:'3 × 12',         wert:32, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'abd',    name:'Abduktor',           schema:'3 × 12',         wert:45, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'crunch', name:'Crunchmaschine',     schema:'3 × 12',         wert:27, einheit:'kg', saetze:3, typ:'gewicht'}
   ],
   B: [
-    {id:'klimmB', name:'Klimmzüge leicht',   schema:'Rotation',        wert:20, step:1, einheit:'Wdh ges.', saetze:1},
-    {id:'rudern', name:'KH-Rudern einarmig', schema:'3 × 12 je Seite', wert:14, step:2, einheit:'kg', saetze:3},
-    {id:'schult', name:'Schulterdrücken KH', schema:'3 × 10',          wert:9,  step:1, einheit:'kg', saetze:3},
-    {id:'streck', name:'Beinstrecker',       schema:'3 × 12',          wert:36, step:4, einheit:'kg', saetze:3},
-    {id:'add',    name:'Adduktor',           schema:'3 × 12',          wert:45, step:4, einheit:'kg', saetze:3},
-    {id:'bizeps', name:'Bizepscurls KH',     schema:'3 × 10–12',       wert:10, step:2, einheit:'kg', saetze:3}
+    {id:'klimmB', name:'Klimmzüge leicht',   schema:'Rotation',        wert:6,  einheit:'Wdh', saetze:3, typ:'wdh'},
+    {id:'rudern', name:'KH-Rudern einarmig', schema:'3 × 12 je Seite', wert:14, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'schult', name:'Schulterdrücken KH', schema:'3 × 10',          wert:9,  einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'streck', name:'Beinstrecker',       schema:'3 × 12',          wert:36, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'add',    name:'Adduktor',           schema:'3 × 12',          wert:45, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'bizeps', name:'Bizepscurls KH',     schema:'3 × 10–12',       wert:10, einheit:'kg', saetze:3, typ:'gewicht'}
   ]
 };
 
@@ -155,134 +222,391 @@ const ROTATION = {
   4:{A:'Max-Test — so viele wie möglich, sauber',B:'3 × Negativwdh., 5 Sek. runter'}
 };
 
-const SCHLUESSEL = 'trainingslog-v1';
-let plan='A', woche=1, letzte={}, verlauf=[], aktuell={};
+const KEY = 'trainingslog-v2', KEY_ALT = 'trainingslog-v1';
+const PAUSE = 90;
 
+let plaene = JSON.parse(JSON.stringify(STANDARD));
+let plan='A', woche=1, letzte={}, verlauf=[], aktuell={}, entwurf=null;
+
+/* ---------- Laden & Speichern ---------- */
 function laden(){
-  try{
-    const s = JSON.parse(localStorage.getItem(SCHLUESSEL));
-    if(s){ letzte=s.letzte||{}; verlauf=s.verlauf||[]; woche=s.woche||1; plan=s.naechsterPlan||'A'; }
-  }catch(e){}
-  planWaehlen(plan);
-  verlaufZeichnen();
+  let s = null;
+  try{ s = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+  if(!s){ try{ s = JSON.parse(localStorage.getItem(KEY_ALT)); }catch(e){} }
+  if(s){
+    letzte = s.letzte || {}; verlauf = s.verlauf || [];
+    woche = s.woche || 1; plan = s.naechsterPlan || 'A';
+    if(s.plaene) plaene = s.plaene;
+    entwurf = s.entwurf || null;
+  }
+  planWaehlen(plan, true);
+  verlaufZeichnen(); kurvenZeichnen();
 }
 
+function ablegen(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify({
+      plaene, letzte, verlauf, woche, naechsterPlan:plan, entwurf
+    }));
+  }catch(e){}
+}
+
+function entwurfSichern(){
+  entwurf = {plan, woche, stand:JSON.parse(JSON.stringify(aktuell)), zeit:Date.now()};
+  ablegen();
+}
+
+/* ---------- Zustand ---------- */
 function altwert(id){
   const l = letzte[id];
   if(l === undefined) return null;
   return (typeof l === 'object') ? l : {wert:l, sauber:true};
 }
 
-function planWaehlen(p){
-  plan=p; aktuell={};
+function frischerStand(p){
+  const st = {};
+  plaene[p].forEach(u=>{
+    const a = altwert(u.id);
+    if(u.typ === 'wdh'){
+      const basis = (a && Array.isArray(a.saetze)) ? a.saetze : new Array(u.saetze).fill(a ? a.wert : u.wert);
+      st[u.id] = { werte: gleichLang(basis, u.saetze, u.wert), status:new Array(u.saetze).fill(0) };
+    }else{
+      st[u.id] = { wert: a ? a.wert : u.wert, status:new Array(u.saetze).fill(0) };
+    }
+  });
+  return st;
+}
+function gleichLang(arr, n, fallback){
+  const out = arr.slice(0,n);
+  while(out.length < n) out.push(arr[arr.length-1] !== undefined ? arr[arr.length-1] : fallback);
+  return out;
+}
+
+function planWaehlen(p, beimStart){
+  plan = p;
   btnA.classList.toggle('on', p==='A');
   btnB.classList.toggle('on', p==='B');
   titel.textContent = 'Plan ' + p;
   datum.textContent = new Date().toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
-  PLAENE[p].forEach(u=>{
-    const a = altwert(u.id);
-    aktuell[u.id] = { wert: a ? a.wert : u.wert, status: new Array(u.saetze).fill(0) };
-  });
-  zeichnen();
+
+  const passt = beimStart && entwurf && entwurf.plan === p && frisch(entwurf.zeit);
+  aktuell = passt ? entwurf.stand : frischerStand(p);
+  if(passt) woche = entwurf.woche;
+  entwurfBox(passt);
+  zeichnen(); bearbZeichnen();
+}
+function frisch(t){ return (Date.now() - t) < 1000*60*60*8; }
+
+function entwurfBox(an){
+  entwurfbox.innerHTML = an
+    ? '<div class="entwurfhinweis">Nicht gespeichertes Training von vorhin wiederhergestellt. '+
+      'Unten speichern oder <a href="#" style="color:var(--signal)" onclick="entwurfWeg();return false">verwerfen</a>.</div>'
+    : '';
+}
+function entwurfWeg(){ entwurf=null; ablegen(); aktuell=frischerStand(plan); entwurfBox(false); zeichnen(); }
+
+function wocheAendern(d){ woche = ((woche-1+d+4)%4)+1; zeichnen(); entwurfSichern(); }
+
+/* ---------- Zeichnen ---------- */
+function fmt(n){ return Number(n).toString().replace('.',','); }
+
+function infoZeile(id){
+  const u = plaene[plan].find(x=>x.id===id), a = aktuell[id], alt = altwert(id);
+  if(!alt) return '<span class="letzte"></span>';
+  if(u.typ === 'wdh'){
+    const jetzt = a.werte.reduce((x,y)=>x+y,0);
+    const frueher = Array.isArray(alt.saetze) ? alt.saetze.reduce((x,y)=>x+y,0) : alt.wert;
+    if(!alt.sauber) return '<span class="letzte halten">letztes Mal '+frueher+' ges. — unsauber</span>';
+    if(jetzt > frueher) return '<span class="letzte up">letztes Mal '+frueher+' ges. ▲ +'+(jetzt-frueher)+'</span>';
+    return '<span class="letzte">letztes Mal '+frueher+' Wdh gesamt</span>';
+  }
+  if(!alt.sauber)       return '<span class="letzte halten">letztes Mal '+fmt(alt.wert)+' — unsauber, Gewicht halten</span>';
+  if(a.wert > alt.wert) return '<span class="letzte up">letztes Mal '+fmt(alt.wert)+' ▲ +'+fmt(a.wert-alt.wert)+'</span>';
+  if(a.wert < alt.wert) return '<span class="letzte">letztes Mal '+fmt(alt.wert)+' ▼ '+fmt(a.wert-alt.wert)+'</span>';
+  return '<span class="letzte">letztes Mal '+fmt(alt.wert)+' — sauber</span>';
 }
 
-function wocheAendern(d){ woche = ((woche-1+d+4)%4)+1; zeichnen(); }
+const BESCHR = ['Satz','✓ sauber','⚠ unsauber'], KLASSEN = ['','ok','hart'];
 
 function zeichnen(){
   wochelabel.textContent = 'WOCHE ' + woche + ' · KLIMMZÜGE';
-  variante.textContent = ROTATION[woche][plan];
+  variante.textContent = ROTATION[woche][plan] || '';
 
-  uebungen.innerHTML = PLAENE[plan].map(u=>{
-    const a = aktuell[u.id], alt = altwert(u.id);
+  uebungen.innerHTML = plaene[plan].map(u=>{
+    const a = aktuell[u.id];
+    if(!a) return '';
     const alleFertig = a.status.every(s=>s>0);
     const hatHart = a.status.some(s=>s===2);
+    let koerper;
 
-    let info = '<span class="letzte"></span>';
-    if(alt){
-      if(!alt.sauber)            info = '<span class="letzte halten">letztes Mal '+fmt(alt.wert)+' — unsauber, Gewicht halten</span>';
-      else if(a.wert > alt.wert) info = '<span class="letzte up">letztes Mal '+fmt(alt.wert)+' ▲ +'+fmt(a.wert-alt.wert)+'</span>';
-      else                       info = '<span class="letzte">letztes Mal '+fmt(alt.wert)+' — sauber</span>';
+    if(u.typ === 'wdh'){
+      koerper = '<div id="i-'+u.id+'">'+infoZeile(u.id)+'</div>' +
+        a.werte.map((w,i)=>
+          '<div class="wdhzeile">'+
+            '<div class="snr">S'+(i+1)+'</div>'+
+            '<button class="step klein" onpointerdown="halten(event,\''+u.id+'\',-1,'+i+')" oncontextmenu="return false">&minus;</button>'+
+            '<div class="zahl" id="z-'+u.id+'-'+i+'">'+w+'</div>'+
+            '<button class="step klein" onpointerdown="halten(event,\''+u.id+'\',1,'+i+')" oncontextmenu="return false">+</button>'+
+            '<button class="satz '+KLASSEN[a.status[i]]+'" onclick="satz(\''+u.id+'\','+i+')">'+
+              (a.status[i]===0 ? 'offen' : BESCHR[a.status[i]])+'</button>'+
+          '</div>').join('');
+    }else{
+      koerper =
+        '<div class="zeile">'+
+          '<button class="step" onpointerdown="halten(event,\''+u.id+'\',-1)" oncontextmenu="return false">&minus;</button>'+
+          '<div class="wert"><div class="zahl" id="z-'+u.id+'">'+fmt(a.wert)+
+            '<span class="einheit">'+u.einheit+'</span></div>'+
+            '<span id="i-'+u.id+'">'+infoZeile(u.id)+'</span></div>'+
+          '<button class="step" onpointerdown="halten(event,\''+u.id+'\',1)" oncontextmenu="return false">+</button>'+
+        '</div>'+
+        '<div class="saetze">'+a.status.map((s,i)=>
+          '<button class="satz '+KLASSEN[s]+'" onclick="satz(\''+u.id+'\','+i+')">'+
+          (s===0 ? 'Satz '+(i+1) : BESCHR[s])+'</button>').join('')+'</div>';
     }
-
-    const beschriftung = ['Satz','✓ sauber','⚠ unsauber'], klassen = ['','ok','hart'];
-    const saetze = a.status.map((s,i)=>
-      '<button class="satz '+klassen[s]+'" onclick="satz(\''+u.id+'\','+i+')">'+
-      (s===0 ? 'Satz '+(i+1) : beschriftung[s])+'</button>').join('');
 
     return '<div class="karte '+(hatHart?'warn':(alleFertig?'fertig':''))+'">'+
       '<div class="kopf"><div class="name">'+u.name+'</div><div class="schema">'+u.schema+'</div></div>'+
-      '<div class="zeile">'+
-        '<button class="step" onclick="wert(\''+u.id+'\',-'+u.step+')">&minus;</button>'+
-        '<div class="wert"><div class="zahl">'+fmt(a.wert)+'<span class="einheit">'+u.einheit+'</span></div>'+info+'</div>'+
-        '<button class="step" onclick="wert(\''+u.id+'\','+u.step+')">+</button>'+
-      '</div>'+
-      '<div class="saetze">'+saetze+'</div>'+
+      koerper+
       (hatHart ? '<div class="legende">Nächstes Mal gleiches Gewicht — erst sauber schaffen, dann steigern.</div>' : '')+
     '</div>';
   }).join('');
 }
 
-function fmt(n){ return Number(n).toString().replace('.',','); }
-function wert(id,d){ aktuell[id].wert = Math.max(0, Math.round((aktuell[id].wert+d)*10)/10); zeichnen(); }
-function satz(id,i){ const st=aktuell[id].status; st[i]=(st[i]+1)%3; zeichnen(); }
-
-function speichern(){
-  verlauf.unshift({
-    datum:new Date().toISOString().slice(0,10), plan, woche,
-    uebungen:PLAENE[plan].map(u=>({
-      name:u.name, wert:aktuell[u.id].wert, einheit:u.einheit,
-      geschafft:aktuell[u.id].status.filter(s=>s>0).length,
-      sauber:!aktuell[u.id].status.some(s=>s===2)
-    }))
-  });
-  verlauf = verlauf.slice(0,50);
-  PLAENE[plan].forEach(u=>{
-    letzte[u.id] = { wert:aktuell[u.id].wert, sauber:!aktuell[u.id].status.some(s=>s===2) };
-  });
-
-  const naechsterPlan = plan==='A' ? 'B' : 'A';
-  const naechsteWoche = plan==='B' ? (woche%4)+1 : woche;
-
-  try{
-    localStorage.setItem(SCHLUESSEL, JSON.stringify({letzte, verlauf, woche:naechsteWoche, naechsterPlan}));
-    speicherbtn.textContent='✓ Gespeichert'; speicherbtn.classList.add('ok');
-    setTimeout(()=>{ speicherbtn.textContent='Training speichern'; speicherbtn.classList.remove('ok'); },2000);
-  }catch(e){ speicherbtn.textContent='Speichern fehlgeschlagen'; }
-
-  woche = naechsteWoche;
-  verlaufZeichnen();
-  planWaehlen(naechsterPlan);
+/* ---------- Werte ändern ---------- */
+function wert(id,d,idx){
+  const u = plaene[plan].find(x=>x.id===id), a = aktuell[id];
+  if(u.typ === 'wdh'){
+    a.werte[idx] = Math.max(0, a.werte[idx] + d);
+    const z = document.getElementById('z-'+id+'-'+idx);
+    if(z) z.textContent = a.werte[idx];
+  }else{
+    a.wert = Math.max(0, Math.round((a.wert + d)*10)/10);
+    const z = document.getElementById('z-'+id);
+    if(z) z.innerHTML = fmt(a.wert)+'<span class="einheit">'+u.einheit+'</span>';
+  }
+  const i = document.getElementById('i-'+id);
+  if(i) i.innerHTML = infoZeile(id);
 }
 
+let haltTimer=null, haltIntervall=null;
+function halten(ev,id,richtung,idx){
+  ev.preventDefault();
+  tonFreischalten();
+  wert(id,richtung,idx);
+  haltTimer = setTimeout(()=>{ haltIntervall = setInterval(()=>wert(id,richtung,idx), 90); }, 500);
+}
+function loslassen(){
+  if(haltTimer || haltIntervall) entwurfSichern();
+  clearTimeout(haltTimer); clearInterval(haltIntervall);
+  haltTimer = haltIntervall = null;
+}
+window.addEventListener('pointerup', loslassen);
+window.addEventListener('pointercancel', loslassen);
+
+function satz(id,i){
+  const st = aktuell[id].status;
+  st[i] = (st[i]+1)%3;
+  zeichnen(); entwurfSichern();
+  if(st[i] > 0) timerStart();
+}
+
+/* ---------- Pausentimer ---------- */
+let rest = PAUSE, timerId = null, audio = null;
+function tonFreischalten(){
+  if(!audio){
+    try{ audio = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  }
+  if(audio && audio.state === 'suspended') audio.resume();
+}
+function piep(){
+  if(!audio) return;
+  [0,0.28].forEach(v=>{
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.frequency.value = 880; o.connect(g); g.connect(audio.destination);
+    g.gain.setValueAtTime(0.0001, audio.currentTime+v);
+    g.gain.exponentialRampToValueAtTime(0.25, audio.currentTime+v+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime+v+0.2);
+    o.start(audio.currentTime+v); o.stop(audio.currentTime+v+0.22);
+  });
+}
+function timerStart(){
+  tonFreischalten();
+  rest = PAUSE;
+  timerbox.classList.add('an');
+  uhrZeigen();
+  clearInterval(timerId);
+  timerId = setInterval(()=>{
+    rest--; uhrZeigen();
+    if(rest <= 0){ piep(); timerStop(); }
+  }, 1000);
+}
+function timerPlus(s){ rest += s; uhrZeigen(); }
+function timerStop(){ clearInterval(timerId); timerId=null; timerbox.classList.remove('an'); }
+function uhrZeigen(){
+  const m = Math.floor(Math.max(rest,0)/60), s = Math.max(rest,0)%60;
+  uhr.textContent = m + ':' + String(s).padStart(2,'0');
+  uhr.style.color = rest <= 10 ? 'var(--signal)' : 'var(--chalk)';
+}
+
+/* ---------- Training speichern ---------- */
+function speichern(){
+  const eintrag = { datum:new Date().toISOString().slice(0,10), plan, woche, uebungen:[] };
+  plaene[plan].forEach(u=>{
+    const a = aktuell[u.id], sauber = !a.status.some(s=>s===2);
+    if(u.typ === 'wdh'){
+      eintrag.uebungen.push({id:u.id, name:u.name, saetze:a.werte.slice(), wert:a.werte.reduce((x,y)=>x+y,0), einheit:u.einheit, sauber});
+      letzte[u.id] = {wert:a.werte.reduce((x,y)=>x+y,0), saetze:a.werte.slice(), sauber};
+    }else{
+      eintrag.uebungen.push({id:u.id, name:u.name, wert:a.wert, einheit:u.einheit, sauber});
+      letzte[u.id] = {wert:a.wert, sauber};
+    }
+  });
+  verlauf.unshift(eintrag);
+  verlauf = verlauf.slice(0,60);
+
+  plan  = plan==='A' ? 'B' : 'A';
+  woche = plan==='A' ? (woche%4)+1 : woche;
+  entwurf = null;
+  ablegen();
+
+  speicherbtn.textContent='✓ Gespeichert';
+  speicherbtn.classList.add('ok');
+  setTimeout(()=>{ speicherbtn.textContent='Training speichern'; speicherbtn.classList.remove('ok'); },2000);
+
+  timerStop();
+  verlaufZeichnen(); kurvenZeichnen();
+  planWaehlen(plan);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------- Verlauf & Kurven ---------- */
 function verlaufZeichnen(){
   const ziel = document.getElementById('verlauf');
   if(!verlauf.length){
-    ziel.innerHTML='<div class="eintrag"><span>Noch nichts gespeichert. Das erste Training erscheint hier.</span></div>';
-    return;
+    ziel.innerHTML='<div class="eintrag"><span>Noch nichts gespeichert.</span></div>'; return;
   }
-  ziel.innerHTML = verlauf.slice(0,10).map(e=>{
+  ziel.innerHTML = verlauf.slice(0,12).map(e=>{
     const d = e.datum.split('-').reverse().slice(0,2).join('.');
     const z = e.uebungen.map(u=>u.name.split(' ')[0]+' '+fmt(u.wert)+(u.sauber?'':' ⚠')).join(' · ');
     return '<div class="eintrag"><b>'+d+' · PLAN '+e.plan+' · WOCHE '+e.woche+'</b><br><span>'+z+'</span></div>';
   }).join('');
 }
 
-function sichern(){
-  const daten = localStorage.getItem(SCHLUESSEL) || '{}';
-  navigator.clipboard.writeText(daten)
-    .then(()=>alert('Daten in die Zwischenablage kopiert. In eine Notiz einfügen — das ist deine Sicherung.'))
-    .catch(()=>prompt('Diesen Text kopieren und in einer Notiz sichern:', daten));
+function kurvenZeichnen(){
+  const ziel = document.getElementById('kurven');
+  const reihen = {};
+  verlauf.slice().reverse().forEach(e=>{
+    e.uebungen.forEach(u=>{
+      const id = u.id || u.name;
+      (reihen[id] = reihen[id] || {name:u.name, einheit:u.einheit, werte:[]}).werte.push(u.wert);
+    });
+  });
+  const brauchbar = Object.values(reihen).filter(r=>r.werte.length >= 2);
+  if(!brauchbar.length){
+    ziel.innerHTML = '<div class="eintrag"><span>Ab dem zweiten gespeicherten Training erscheinen hier Kurven.</span></div>';
+    return;
+  }
+  ziel.innerHTML = brauchbar.map(r=>{
+    const min = Math.min(...r.werte), max = Math.max(...r.werte), spanne = (max-min) || 1;
+    const n = r.werte.length;
+    const pkt = r.werte.map((w,i)=>{
+      const x = n===1 ? 50 : (i/(n-1))*96 + 2;
+      const y = 46 - ((w-min)/spanne)*40;
+      return [x,y];
+    });
+    const linie = pkt.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+    const punkte = pkt.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="1.6" fill="#F2C200"/>').join('');
+    const jetzt = r.werte[r.werte.length-1], start = r.werte[0];
+    const diff = jetzt - start;
+    const trend = diff > 0 ? '▲ +'+fmt(diff) : (diff < 0 ? '▼ '+fmt(diff) : '→ gleich');
+    return '<div class="kurve">'+
+      '<div class="kn"><span>'+r.name+'</span><span class="kv">'+fmt(jetzt)+' '+r.einheit+' · '+trend+'</span></div>'+
+      '<svg viewBox="0 0 100 50" preserveAspectRatio="none">'+
+        '<polyline points="'+linie+'" fill="none" stroke="#F2C200" stroke-width="1.4" '+
+        'stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'+punkte+
+      '</svg></div>';
+  }).join('');
 }
 
+/* ---------- Übungen bearbeiten ---------- */
+function bearbZeichnen(){
+  document.getElementById('bearbliste').innerHTML = plaene[plan].map((u,i)=>
+    '<div class="bearb">'+
+      '<input value="'+esc(u.name)+'" oninput="bearbSetzen('+i+',\'name\',this.value)" placeholder="Name der Übung">'+
+      '<div class="reihe">'+
+        '<input value="'+esc(u.schema)+'" oninput="bearbSetzen('+i+',\'schema\',this.value)" placeholder="z. B. 3 × 12">'+
+        '<input value="'+esc(u.einheit)+'" oninput="bearbSetzen('+i+',\'einheit\',this.value)" placeholder="kg">'+
+      '</div>'+
+      '<div class="reihe">'+
+        '<input type="number" value="'+u.saetze+'" min="1" max="8" oninput="bearbSetzen('+i+',\'saetze\',this.value)" placeholder="Sätze">'+
+        '<select onchange="bearbSetzen('+i+',\'typ\',this.value)">'+
+          '<option value="gewicht"'+(u.typ==='gewicht'?' selected':'')+'>Gewicht</option>'+
+          '<option value="wdh"'+(u.typ==='wdh'?' selected':'')+'>Wdh je Satz</option>'+
+        '</select>'+
+      '</div>'+
+      '<div class="werkzeug">'+
+        '<button onclick="verschieben('+i+',-1)">▲ hoch</button>'+
+        '<button onclick="verschieben('+i+',1)">▼ runter</button>'+
+        '<button class="warnen" onclick="uebungWeg('+i+')">löschen</button>'+
+      '</div>'+
+    '</div>').join('');
+}
+function esc(t){ return String(t).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function bearbSetzen(i,feld,wertNeu){
+  if(feld==='saetze') wertNeu = Math.max(1, Math.min(8, parseInt(wertNeu)||1));
+  plaene[plan][i][feld] = wertNeu;
+}
+function verschieben(i,d){
+  const l = plaene[plan], j = i+d;
+  if(j<0 || j>=l.length) return;
+  [l[i],l[j]] = [l[j],l[i]];
+  bearbZeichnen();
+}
+function uebungWeg(i){
+  if(!confirm('„'+plaene[plan][i].name+'" wirklich entfernen?')) return;
+  plaene[plan].splice(i,1);
+  bearbZeichnen();
+}
+function uebungHinzu(){
+  plaene[plan].push({id:'u'+Date.now(), name:'Neue Übung', schema:'3 × 12', wert:20, einheit:'kg', saetze:3, typ:'gewicht'});
+  bearbZeichnen();
+}
+function bearbSpeichern(){
+  const stand = aktuell;
+  aktuell = frischerStand(plan);
+  Object.keys(stand).forEach(id=>{ if(aktuell[id]) aktuell[id] = stand[id]; });
+  plaene[plan].forEach(u=>{ if(!aktuell[u.id]) aktuell[u.id] = frischerStand(plan)[u.id]; });
+  ablegen(); zeichnen(); bearbZeichnen();
+  document.getElementById('bearbeiten').open = false;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function zuruecksetzen(){
+  if(!confirm('Plan '+plan+' auf die Standardübungen zurücksetzen? Gespeicherte Trainings bleiben erhalten.')) return;
+  plaene[plan] = JSON.parse(JSON.stringify(STANDARD[plan]));
+  aktuell = frischerStand(plan);
+  ablegen(); zeichnen(); bearbZeichnen();
+}
+
+/* ---------- Sicherung ---------- */
+function sichern(){
+  const daten = localStorage.getItem(KEY) || '{}';
+  navigator.clipboard.writeText(daten)
+    .then(()=>alert('Daten kopiert. In eine Notiz einfügen — das ist deine Sicherung.'))
+    .catch(()=>prompt('Diesen Text kopieren und sichern:', daten));
+}
 function wiederherstellen(){
   const t = prompt('Gesicherte Daten hier einfügen:');
   if(!t) return;
-  try{
-    JSON.parse(t);
-    localStorage.setItem(SCHLUESSEL, t);
-    location.reload();
-  }catch(e){ alert('Das war kein gültiger Sicherungstext.'); }
+  try{ JSON.parse(t); localStorage.setItem(KEY, t); location.reload(); }
+  catch(e){ alert('Das war kein gültiger Sicherungstext.'); }
 }
+
+/* ---------- Ungespeichertes ---------- */
+window.addEventListener('beforeunload', e=>{
+  const offen = Object.values(aktuell).some(a=>a.status.some(s=>s>0));
+  if(offen){ entwurfSichern(); e.preventDefault(); e.returnValue=''; }
+});
+document.addEventListener('visibilitychange', ()=>{ if(document.hidden) entwurfSichern(); });
 
 laden();
 </script>
