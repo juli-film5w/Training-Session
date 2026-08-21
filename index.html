@@ -10,8 +10,6 @@
 <meta name="theme-color" content="#15181C">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" href="icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -21,11 +19,9 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;background:var(--iron)}
-  body{
-    font-family:'IBM Plex Mono',ui-monospace,monospace;color:var(--chalk);
+  body{font-family:'IBM Plex Mono',ui-monospace,monospace;color:var(--chalk);
     max-width:520px;margin:0 auto;
-    padding:calc(env(safe-area-inset-top) + 14px) 12px calc(env(safe-area-inset-bottom) + 40px);
-  }
+    padding:calc(env(safe-area-inset-top) + 14px) 12px calc(env(safe-area-inset-bottom) + 40px);}
   .cond{font-family:'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.04em}
 
   .top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
@@ -33,32 +29,36 @@
     font-size:30px;font-weight:700;letter-spacing:.06em;margin:0;line-height:1}
   .datum{font-size:12px;color:var(--muted)}
 
-  .switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+  .switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
   .switch button{font-family:'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;
     letter-spacing:.08em;font-size:20px;font-weight:700;padding:14px 0;border:2px solid var(--line);
     background:var(--plate);color:var(--muted);border-radius:10px;cursor:pointer}
   .switch button.on{background:var(--signal);color:#15181C;border-color:var(--signal)}
 
-  .wochenzeile{display:flex;align-items:center;gap:8px;background:var(--plate);
-    border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:14px}
-  .wochenzeile .lbl{font-size:11px;color:var(--muted);letter-spacing:.08em}
-  .wochenzeile .var{font-size:13px;font-weight:600;line-height:1.35}
-  .wbtn{width:38px;height:38px;flex:none;border:1px solid var(--line);background:var(--plate-2);
-    color:var(--chalk);border-radius:8px;font-size:17px;cursor:pointer}
-
   .karte{background:var(--plate);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
   .karte.fertig{border-color:var(--done)}
   .karte.warn{border-color:var(--hart)}
-  .kopf{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+  .kopf{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+  .kopf .txt{min-width:0}
   .name{font-family:'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;
     font-size:19px;font-weight:600;letter-spacing:.04em;line-height:1.1}
-  .schema{font-size:11px;color:var(--muted);white-space:nowrap}
+  .schema{font-size:11px;color:var(--muted);margin-top:2px}
+  .mehr{flex:none;width:38px;height:38px;border:1px solid var(--line);background:var(--plate-2);
+    color:var(--muted);border-radius:8px;font-size:16px;cursor:pointer}
+
+  .menue{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .menue button{flex:1;min-width:90px;padding:10px 6px;border:1px solid var(--line);background:var(--plate-2);
+    color:var(--chalk);border-radius:8px;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
+  .menue button.warnen{color:var(--hart);border-color:var(--hart)}
+  .auswahl{max-height:230px;overflow:auto;margin-bottom:10px;border:1px solid var(--line);border-radius:9px}
+  .auswahl button{display:block;width:100%;text-align:left;padding:11px 12px;border:none;
+    border-bottom:1px solid var(--line);background:var(--plate-2);color:var(--chalk);
+    font-size:12px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
 
   .zeile{display:flex;align-items:center;gap:10px}
   .step{width:52px;height:52px;flex:none;border:none;border-radius:10px;background:var(--plate-2);
     color:var(--chalk);font-size:26px;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace}
   .step:active{background:var(--signal);color:#15181C}
-  .step.klein{width:42px;height:42px;font-size:21px}
   .wert{flex:1;text-align:center;min-width:0}
   .wert .zahl{font-size:32px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
   .wert .einheit{font-size:11px;color:var(--muted);margin-left:3px}
@@ -71,24 +71,42 @@
     color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;font-family:'IBM Plex Mono',monospace}
   .satz.ok{background:var(--done);border-color:var(--done);color:#15181C}
   .satz.hart{background:var(--hart);border-color:var(--hart);color:#15181C}
-  .wdhzeile{display:flex;align-items:center;gap:8px;margin-top:9px}
-  .wdhzeile .snr{font-size:11px;color:var(--muted);width:24px;flex:none}
-  .wdhzeile .zahl{font-size:24px;font-weight:700;flex:1;text-align:center;font-variant-numeric:tabular-nums}
-  .wdhzeile .satz{flex:none;width:104px;height:42px;font-size:12px}
+  .satz.waerme{border-style:dashed;font-size:12px}
+  .abstand{font-size:11px;color:var(--muted);margin:-6px 0 12px}
+  .notiz{width:100%;background:var(--plate);border:1px solid var(--line);color:var(--chalk);
+    border-radius:10px;padding:11px;font-size:13px;font-family:'IBM Plex Mono',monospace;
+    margin-top:12px;resize:none;line-height:1.4}
+  .notiz::placeholder{color:var(--muted)}
+  .eintrag i{color:var(--signal);font-style:normal}
+
+  .halbe{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:9px;
+    padding:14px;border:2px solid var(--line);border-radius:10px;background:transparent;
+    color:var(--chalk);cursor:pointer;font-family:'IBM Plex Mono',monospace}
+  .halbe .folge{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:700;
+    color:var(--muted);width:22px;flex:none;text-align:center}
+  .halbe .mitte{flex:1;min-width:0}
+  .halbe .t1{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;
+    font-size:18px;font-weight:600;letter-spacing:.05em;line-height:1.1}
+  .halbe .t2{font-size:11px;color:var(--muted);margin-top:2px}
+  .halbe .haken{font-size:20px;flex:none;color:var(--muted)}
+  .halbe.ok{border-color:var(--done);background:rgba(61,214,140,.12)}
+  .halbe.ok .haken,.halbe.ok .folge{color:var(--done)}
+  .halbe.hart{border-color:var(--hart);background:rgba(232,134,60,.12)}
+  .halbe.hart .haken,.halbe.hart .folge{color:var(--hart)}
+  .summe{display:flex;align-items:center;gap:10px;margin-top:11px;
+    border-top:1px solid var(--line);padding-top:11px}
+  .summe .lbl{flex:1;font-size:11px;color:var(--muted);line-height:1.3}
+  .summe .zahl{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;min-width:46px;text-align:right}
+  .summe button{width:42px;height:42px;flex:none;border:none;border-radius:9px;background:var(--plate-2);
+    color:var(--chalk);font-size:21px;cursor:pointer;font-family:'IBM Plex Mono',monospace}
+  .pyrsumme{font-size:11px;color:var(--muted);margin-top:9px;letter-spacing:.03em}
   .legende{font-size:10px;color:var(--muted);margin-top:7px;letter-spacing:.03em}
 
-  .timer{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 78px);z-index:5;
-    display:none;align-items:center;gap:10px;background:var(--plate-2);
-    border:2px solid var(--signal);border-radius:12px;padding:10px 12px;margin-top:12px;
-    box-shadow:0 6px 20px rgba(0,0,0,.5)}
-  .timer.an{display:flex}
-  .timer .uhr{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-  .timer .txt{flex:1;font-size:11px;color:var(--muted);line-height:1.3}
-  .timer button{border:1px solid var(--line);background:var(--plate);color:var(--chalk);
-    border-radius:8px;padding:9px 11px;font-size:12px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
+  .zufuegen{width:100%;padding:14px 0;border:1px dashed var(--line);background:transparent;
+    color:var(--muted);border-radius:11px;font-size:12px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
 
   .speichern{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 10px);width:100%;padding:18px 0;
-    margin-top:12px;border:none;border-radius:12px;background:var(--signal);color:#15181C;cursor:pointer;
+    margin-top:14px;border:none;border-radius:12px;background:var(--signal);color:#15181C;cursor:pointer;
     font-family:'Barlow Condensed','Arial Narrow',sans-serif;text-transform:uppercase;
     font-size:22px;font-weight:700;letter-spacing:.08em;box-shadow:0 6px 20px rgba(0,0,0,.5)}
   .speichern.ok{background:var(--done)}
@@ -112,14 +130,14 @@
     font-family:'IBM Plex Mono',monospace;margin-top:6px}
   .bearb .reihe{display:flex;gap:6px}
   .bearb .reihe > *{flex:1}
-  .bfeld{font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.05em}
+  .bfeld{font-size:10px;color:var(--muted);margin-top:8px;letter-spacing:.05em;line-height:1.5}
   .werkzeug{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
   .werkzeug button{flex:1;min-width:120px;padding:11px 0;border:1px solid var(--line);background:var(--plate);
     color:var(--muted);border-radius:9px;font-size:11px;font-family:'IBM Plex Mono',monospace;cursor:pointer}
   .werkzeug button.warnen{color:var(--hart);border-color:var(--hart)}
   .hinweis{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.5}
   .entwurfhinweis{background:var(--plate-2);border:1px solid var(--signal);border-radius:9px;
-    padding:9px 11px;font-size:11px;line-height:1.4;margin-bottom:12px;color:var(--chalk)}
+    padding:9px 11px;font-size:11px;line-height:1.4;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -129,6 +147,7 @@
   <div class="datum" id="datum"></div>
 </div>
 
+<div class="abstand" id="abstand"></div>
 <div id="entwurfbox"></div>
 
 <div class="switch">
@@ -136,23 +155,10 @@
   <button id="btnB" onclick="planWaehlen('B')">Plan B</button>
 </div>
 
-<div class="wochenzeile">
-  <button class="wbtn" onclick="wocheAendern(-1)">&minus;</button>
-  <div style="flex:1">
-    <div class="lbl cond" id="wochelabel">WOCHE 1 &middot; KLIMMZÜGE</div>
-    <div class="var" id="variante">&mdash;</div>
-  </div>
-  <button class="wbtn" onclick="wocheAendern(1)">+</button>
-</div>
-
 <div id="uebungen"></div>
+<button class="zufuegen" onclick="heuteHinzu()">+ Übung für heute hinzufügen</button>
 
-<div class="timer" id="timerbox">
-  <div class="uhr" id="uhr">1:30</div>
-  <div class="txt">Satzpause</div>
-  <button onclick="timerPlus(30)">+30s</button>
-  <button onclick="timerStop()">Fertig</button>
-</div>
+<textarea class="notiz" id="notiz" rows="2" placeholder="Notiz zum Training (freiwillig) — z. B. Schlaf, Schulter, volles Studio" oninput="notizMerken()"></textarea>
 
 <button class="speichern" id="speicherbtn" onclick="speichern()">Training speichern</button>
 
@@ -167,15 +173,15 @@
 </details>
 
 <details id="bearbeiten">
-  <summary>▸ Übungen bearbeiten</summary>
-  <div class="bfeld">Änderungen gelten für den gerade gewählten Plan.</div>
+  <summary>▸ Übungen dauerhaft bearbeiten</summary>
+  <div class="bfeld">Gilt für Plan <b id="bplan">A</b> — dauerhaft, für alle künftigen Trainings.</div>
   <div id="bearbliste"></div>
   <div class="werkzeug">
-    <button onclick="uebungHinzu()">+ Übung hinzufügen</button>
-    <button onclick="bearbSpeichern()">Übungen sichern</button>
+    <button onclick="uebungHinzu()">+ Übung anlegen</button>
+    <button onclick="bearbSpeichern()">Übernehmen</button>
   </div>
   <div class="werkzeug">
-    <button class="warnen" onclick="zuruecksetzen()">Auf Standardplan zurücksetzen</button>
+    <button class="warnen" onclick="zuruecksetzen()">Plan zurücksetzen</button>
   </div>
 </details>
 
@@ -191,420 +197,489 @@
 <div class="hinweis">
   Aufwärmen: 8 Min Rudergerät<br>
   Satzfeld tippen: 1× sauber &middot; 2× unsauber &middot; 3× zurücksetzen<br>
-  &minus;/+ tippen = 1 Schritt &middot; gedrückt halten = schnell zählen
+  &minus;/+ tippen = 1 Schritt &middot; gedrückt halten = schnell zählen<br>
+  Übungen ohne angetippten Satz zählen als nicht gemacht.<br>
+  Aufwärmsätze zählen nicht mit.
 </div>
 
 <script>
-/* ---------- Standardpläne ---------- */
+/* ---------- Standard ---------- */
 const STANDARD = {
   A: [
-    {id:'klimm',  name:'Klimmzüge',          schema:'Rotation',       wert:8,  einheit:'Wdh', saetze:3, typ:'wdh'},
-    {id:'bank',   name:'Bankdrücken',        schema:'3 × 8',          wert:30, einheit:'kg + Stange', saetze:3, typ:'gewicht'},
-    {id:'presse', name:'Beinpresse',         schema:'3 × 12',         wert:81, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'beuger', name:'Beinbeuger',         schema:'3 × 12',         wert:32, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'abd',    name:'Abduktor',           schema:'3 × 12',         wert:45, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'crunch', name:'Crunchmaschine',     schema:'3 × 12',         wert:27, einheit:'kg', saetze:3, typ:'gewicht'}
+    {id:'klimmA', name:'Klimmzüge eng',       schema:'Pyramide 1–8–1, enger Griff', wert:27, schritt:1, einheit:'kg Gegengewicht', spitze:8, typ:'pyramide', abwaerts:true},
+    {id:'bank',   name:'Bankdrücken',         schema:'3 × 8 · Gesamtgewicht', wert:50, schritt:1, einheit:'kg', saetze:3, typ:'gewicht', waerme:true},
+    {id:'presse', name:'Beinpresse',          schema:'3 × 12',          wert:81, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'beuger', name:'Beinbeuger',          schema:'3 × 12',          wert:32, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'abd',    name:'Abduktor',            schema:'3 × 12',          wert:45, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'crunch', name:'Crunchmaschine',      schema:'3 × 12',          wert:27, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'}
   ],
   B: [
-    {id:'klimmB', name:'Klimmzüge leicht',   schema:'Rotation',        wert:6,  einheit:'Wdh', saetze:3, typ:'wdh'},
-    {id:'rudern', name:'KH-Rudern einarmig', schema:'3 × 12 je Seite', wert:14, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'schult', name:'Schulterdrücken KH', schema:'3 × 10',          wert:9,  einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'streck', name:'Beinstrecker',       schema:'3 × 12',          wert:36, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'add',    name:'Adduktor',           schema:'3 × 12',          wert:45, einheit:'kg', saetze:3, typ:'gewicht'},
-    {id:'bizeps', name:'Bizepscurls KH',     schema:'3 × 10–12',       wert:10, einheit:'kg', saetze:3, typ:'gewicht'}
+    {id:'klimmB', name:'Klimmzüge weit',      schema:'Pyramide 1–8–1, weiter Griff', wert:27, schritt:1, einheit:'kg Gegengewicht', spitze:8, typ:'pyramide', abwaerts:true},
+    {id:'rudern', name:'KH-Rudern einarmig',  schema:'3 × 12 je Seite', wert:14, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'schult', name:'Schulterdrücken KH',  schema:'3 × 10',          wert:9,  schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'streck', name:'Beinstrecker',        schema:'3 × 12',          wert:36, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'add',    name:'Adduktor',            schema:'3 × 12',          wert:45, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'},
+    {id:'bizeps', name:'Bizepscurls KH',      schema:'3 × 10–12',       wert:10, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'}
   ]
 };
 
-const ROTATION = {
-  1:{A:'Pyramide 1-7 / 7-1, eng gegriffen',      B:'3 × 8 weit, locker'},
-  2:{A:'5 × 5 schwer, ggf. Zusatzgewicht',       B:'3 × 10 locker'},
-  3:{A:'EMOM 10 Min · 3 Klimmzüge pro Minute',   B:'3 × 8 ruhig'},
-  4:{A:'Max-Test — so viele wie möglich, sauber',B:'3 × Negativwdh., 5 Sek. runter'}
-};
+/* Ausweichübungen, wenn ein Gerät besetzt ist */
+const ERSATZ = [
+  {name:'Latzug',              schema:'3 × 12', wert:32, einheit:'kg', saetze:3},
+  {name:'Kabelrudern sitzend', schema:'3 × 12', wert:32, einheit:'kg', saetze:3},
+  {name:'Butterfly',           schema:'3 × 12', wert:25, einheit:'kg', saetze:3},
+  {name:'Brustpresse',         schema:'3 × 10', wert:30, einheit:'kg', saetze:3},
+  {name:'Schulterpresse Gerät',schema:'3 × 10', wert:20, einheit:'kg', saetze:3},
+  {name:'Seitheben KH',        schema:'3 × 12', wert:8,  einheit:'kg', saetze:3},
+  {name:'Trizepsdrücken Kabel',schema:'3 × 12', wert:20, einheit:'kg', saetze:3},
+  {name:'Bizepscurls Kabel',   schema:'3 × 12', wert:20, einheit:'kg', saetze:3},
+  {name:'Rückenstrecker',      schema:'3 × 12', wert:0,  einheit:'kg', saetze:3},
+  {name:'Wadenheben',          schema:'3 × 15', wert:40, einheit:'kg', saetze:3},
+  {name:'Beinheben hängend',   schema:'3 × 10', wert:0,  einheit:'Wdh', saetze:3},
+  {name:'Kniebeuge Multipresse',schema:'3 × 10',wert:40, einheit:'kg', saetze:3},
+  {name:'Ausfallschritte KH',  schema:'3 × 10', wert:10, einheit:'kg', saetze:3},
+  {name:'Rudergerät',          schema:'10 Min', wert:0,  einheit:'Min', saetze:1}
+];
 
-const KEY = 'trainingslog-v2', KEY_ALT = 'trainingslog-v1';
-const PAUSE = 90;
+const KEY='trainingslog-v3', ALT2='trainingslog-v2', ALT1='trainingslog-v1';
 
-let plaene = JSON.parse(JSON.stringify(STANDARD));
-let plan='A', woche=1, letzte={}, verlauf=[], aktuell={}, entwurf=null;
+let plaene = kopie(STANDARD);
+let plan='A', letzte={}, verlauf=[], heute=[], aktuell={}, entwurf=null, offenesMenue=null, notizText='';
 
-/* ---------- Laden & Speichern ---------- */
+function kopie(o){ return JSON.parse(JSON.stringify(o)); }
+function fmt(n){ return Number(n).toString().replace('.',','); }
+function esc(t){ return String(t).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+/* ---------- Laden ---------- */
 function laden(){
-  let s = null;
-  try{ s = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
-  if(!s){ try{ s = JSON.parse(localStorage.getItem(KEY_ALT)); }catch(e){} }
+  let s=null;
+  for(const k of [KEY, ALT2, ALT1]){
+    try{ const t=JSON.parse(localStorage.getItem(k)); if(t){ s=t; break; } }catch(e){}
+  }
   if(s){
-    letzte = s.letzte || {}; verlauf = s.verlauf || [];
-    woche = s.woche || 1; plan = s.naechsterPlan || 'A';
-    if(s.plaene) plaene = s.plaene;
-    entwurf = s.entwurf || null;
+    letzte=s.letzte||{}; verlauf=s.verlauf||[];
+    plan=s.naechsterPlan||'A';
+    if(s.plaene && s.version===3) plaene=s.plaene;
+    entwurf=s.entwurf||null;
   }
   planWaehlen(plan, true);
-  verlaufZeichnen(); kurvenZeichnen();
+  verlaufZeichnen(); kurvenZeichnen(); abstandZeigen();
 }
-
 function ablegen(){
-  try{
-    localStorage.setItem(KEY, JSON.stringify({
-      plaene, letzte, verlauf, woche, naechsterPlan:plan, entwurf
-    }));
-  }catch(e){}
+  try{ localStorage.setItem(KEY, JSON.stringify({version:3, plaene, letzte, verlauf, naechsterPlan:plan, entwurf})); }catch(e){}
 }
-
 function entwurfSichern(){
-  entwurf = {plan, woche, stand:JSON.parse(JSON.stringify(aktuell)), zeit:Date.now()};
+  entwurf={plan, heute:kopie(heute), stand:kopie(aktuell), notiz:notizText, zeit:Date.now()};
   ablegen();
+}
+function notizMerken(){ notizText=document.getElementById('notiz').value; entwurfSichern(); }
+
+function abstandZeigen(){
+  const feld=document.getElementById('abstand');
+  if(!verlauf.length){ feld.textContent='Noch kein Training gespeichert.'; return; }
+  const d=new Date(verlauf[0].datum+'T12:00:00');
+  const tage=Math.round((Date.now()-d.getTime())/86400000);
+  const txt = tage<=0 ? 'Letztes Training: heute'
+            : tage===1 ? 'Letztes Training: gestern'
+            : 'Letztes Training vor '+tage+' Tagen';
+  feld.textContent = txt + (tage>=8 ? ' — länger her als üblich' : '');
 }
 
 /* ---------- Zustand ---------- */
 function altwert(id){
-  const l = letzte[id];
-  if(l === undefined) return null;
-  return (typeof l === 'object') ? l : {wert:l, sauber:true};
+  const l=letzte[id];
+  if(l===undefined) return null;
+  return (typeof l==='object') ? l : {wert:l, sauber:true};
 }
-
-function frischerStand(p){
-  const st = {};
-  plaene[p].forEach(u=>{
-    const a = altwert(u.id);
-    if(u.typ === 'wdh'){
-      const basis = (a && Array.isArray(a.saetze)) ? a.saetze : new Array(u.saetze).fill(a ? a.wert : u.wert);
-      st[u.id] = { werte: gleichLang(basis, u.saetze, u.wert), status:new Array(u.saetze).fill(0) };
-    }else{
-      st[u.id] = { wert: a ? a.wert : u.wert, status:new Array(u.saetze).fill(0) };
-    }
-  });
+function pyramide(spitze){
+  const p=[]; for(let i=1;i<=spitze;i++) p.push(i);
+  for(let i=spitze-1;i>=1;i--) p.push(i);
+  return p;
+}
+function haelften(u){
+  const sp=u.spitze||8;
+  let auf=0, ab=0;
+  for(let i=1;i<=sp;i++) auf+=i;
+  for(let i=sp-1;i>=1;i--) ab+=i;
+  return [
+    {titel:'Aufstieg',  folge:'1 → '+sp,     wdh:auf},
+    {titel:'Abstieg',   folge:(sp-1)+' → 1', wdh:ab}
+  ];
+}
+function standFuer(u){
+  const a=altwert(u.id);
+  const n = u.typ==='pyramide' ? 2 : (u.saetze||3);
+  return {wert: a?a.wert:u.wert, status:new Array(n).fill(0), waerme:0, wdh:0};
+}
+function standAufbauen(){
+  const st={};
+  heute.forEach(u=>{ st[u.id]=standFuer(u); });
   return st;
-}
-function gleichLang(arr, n, fallback){
-  const out = arr.slice(0,n);
-  while(out.length < n) out.push(arr[arr.length-1] !== undefined ? arr[arr.length-1] : fallback);
-  return out;
 }
 
 function planWaehlen(p, beimStart){
-  plan = p;
+  plan=p; offenesMenue=null;
   btnA.classList.toggle('on', p==='A');
   btnB.classList.toggle('on', p==='B');
-  titel.textContent = 'Plan ' + p;
-  datum.textContent = new Date().toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
+  titel.textContent='Plan '+p;
+  bplan.textContent=p;
+  datum.textContent=new Date().toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit'});
 
-  const passt = beimStart && entwurf && entwurf.plan === p && frisch(entwurf.zeit);
-  aktuell = passt ? entwurf.stand : frischerStand(p);
-  if(passt) woche = entwurf.woche;
-  entwurfBox(passt);
+  const passt = beimStart && entwurf && entwurf.plan===p && (Date.now()-entwurf.zeit)<1000*60*60*8;
+  heute   = passt ? entwurf.heute : kopie(plaene[p]);
+  aktuell = passt ? entwurf.stand : standAufbauen();
+  notizText = passt ? (entwurf.notiz||'') : '';
+  const nf=document.getElementById('notiz'); if(nf) nf.value=notizText;
+  entwurfbox.innerHTML = passt
+    ? '<div class="entwurfhinweis">Nicht gespeichertes Training von vorhin wiederhergestellt. Unten speichern oder <a href="#" style="color:var(--signal)" onclick="entwurfWeg();return false">verwerfen</a>.</div>' : '';
+  heute.forEach(u=>{
+    const soll = u.typ==='pyramide' ? 2 : (u.saetze||3);
+    if(!aktuell[u.id] || aktuell[u.id].status.length!==soll) aktuell[u.id]=standFuer(u);
+    if(aktuell[u.id].wdh===undefined) aktuell[u.id].wdh=0;
+  });
   zeichnen(); bearbZeichnen();
 }
-function frisch(t){ return (Date.now() - t) < 1000*60*60*8; }
-
-function entwurfBox(an){
-  entwurfbox.innerHTML = an
-    ? '<div class="entwurfhinweis">Nicht gespeichertes Training von vorhin wiederhergestellt. '+
-      'Unten speichern oder <a href="#" style="color:var(--signal)" onclick="entwurfWeg();return false">verwerfen</a>.</div>'
-    : '';
+function entwurfWeg(){
+  entwurf=null; ablegen();
+  heute=kopie(plaene[plan]); aktuell=standAufbauen();
+  notizText=''; document.getElementById('notiz').value='';
+  entwurfbox.innerHTML=''; zeichnen();
 }
-function entwurfWeg(){ entwurf=null; ablegen(); aktuell=frischerStand(plan); entwurfBox(false); zeichnen(); }
 
-function wocheAendern(d){ woche = ((woche-1+d+4)%4)+1; zeichnen(); entwurfSichern(); }
-
-/* ---------- Zeichnen ---------- */
-function fmt(n){ return Number(n).toString().replace('.',','); }
+/* ---------- Anzeige ---------- */
+const BESCHR=['Satz','✓ sauber','⚠ unsauber'], KL=['','ok','hart'];
 
 function infoZeile(id){
-  const u = plaene[plan].find(x=>x.id===id), a = aktuell[id], alt = altwert(id);
+  const u=heute.find(x=>x.id===id), a=aktuell[id], alt=altwert(id);
   if(!alt) return '<span class="letzte"></span>';
-  if(u.typ === 'wdh'){
-    const jetzt = a.werte.reduce((x,y)=>x+y,0);
-    const frueher = Array.isArray(alt.saetze) ? alt.saetze.reduce((x,y)=>x+y,0) : alt.wert;
-    if(!alt.sauber) return '<span class="letzte halten">letztes Mal '+frueher+' ges. — unsauber</span>';
-    if(jetzt > frueher) return '<span class="letzte up">letztes Mal '+frueher+' ges. ▲ +'+(jetzt-frueher)+'</span>';
-    return '<span class="letzte">letztes Mal '+frueher+' Wdh gesamt</span>';
-  }
-  if(!alt.sauber)       return '<span class="letzte halten">letztes Mal '+fmt(alt.wert)+' — unsauber, Gewicht halten</span>';
-  if(a.wert > alt.wert) return '<span class="letzte up">letztes Mal '+fmt(alt.wert)+' ▲ +'+fmt(a.wert-alt.wert)+'</span>';
-  if(a.wert < alt.wert) return '<span class="letzte">letztes Mal '+fmt(alt.wert)+' ▼ '+fmt(a.wert-alt.wert)+'</span>';
-  return '<span class="letzte">letztes Mal '+fmt(alt.wert)+' — sauber</span>';
+  let t='letztes Mal '+fmt(alt.wert)+' '+u.einheit;
+  if(u.typ==='pyramide' && alt.wdh!==undefined) t+=' · '+alt.wdh+' Wdh';
+  if(!alt.sauber) return '<span class="letzte halten">'+t+' — unsauber, halten</span>';
+  if(a.wert===alt.wert) return '<span class="letzte">'+t+'</span>';
+  const hoch = a.wert>alt.wert;
+  const besser = u.abwaerts ? !hoch : hoch;
+  const d = fmt(Math.abs(a.wert-alt.wert));
+  const pfeil = hoch ? '▲ +'+d : '▼ −'+d;
+  const zusatz = u.abwaerts ? (besser?' weniger Hilfe':' mehr Hilfe') : '';
+  return '<span class="letzte'+(besser?' up':'')+'">'+t+' '+pfeil+zusatz+'</span>';
 }
 
-const BESCHR = ['Satz','✓ sauber','⚠ unsauber'], KLASSEN = ['','ok','hart'];
-
 function zeichnen(){
-  wochelabel.textContent = 'WOCHE ' + woche + ' · KLIMMZÜGE';
-  variante.textContent = ROTATION[woche][plan] || '';
+  uebungen.innerHTML = heute.map((u,idx)=>{
+    const a=aktuell[u.id]; if(!a) return '';
+    const angefasst=a.status.some(s=>s>0);
+    const alle=a.status.every(s=>s>0);
+    const hart=a.status.some(s=>s===2);
 
-  uebungen.innerHTML = plaene[plan].map(u=>{
-    const a = aktuell[u.id];
-    if(!a) return '';
-    const alleFertig = a.status.every(s=>s>0);
-    const hatHart = a.status.some(s=>s===2);
-    let koerper;
+    const menue = offenesMenue===u.id ? '<div class="menue">'+
+      '<button onclick="ersetzenStarten(\''+u.id+'\')">Ersetzen</button>'+
+      '<button onclick="verschiebenHeute('+idx+',-1)">▲</button>'+
+      '<button onclick="verschiebenHeute('+idx+',1)">▼</button>'+
+      '<button class="warnen" onclick="heuteWeg('+idx+')">Entfernen</button>'+
+      '</div>' : '';
 
-    if(u.typ === 'wdh'){
-      koerper = '<div id="i-'+u.id+'">'+infoZeile(u.id)+'</div>' +
-        a.werte.map((w,i)=>
-          '<div class="wdhzeile">'+
-            '<div class="snr">S'+(i+1)+'</div>'+
-            '<button class="step klein" onpointerdown="halten(event,\''+u.id+'\',-1,'+i+')" oncontextmenu="return false">&minus;</button>'+
-            '<div class="zahl" id="z-'+u.id+'-'+i+'">'+w+'</div>'+
-            '<button class="step klein" onpointerdown="halten(event,\''+u.id+'\',1,'+i+')" oncontextmenu="return false">+</button>'+
-            '<button class="satz '+KLASSEN[a.status[i]]+'" onclick="satz(\''+u.id+'\','+i+')">'+
-              (a.status[i]===0 ? 'offen' : BESCHR[a.status[i]])+'</button>'+
-          '</div>').join('');
+    let koerper =
+      '<div class="zeile">'+
+        '<button class="step" onpointerdown="halten(event,\''+u.id+'\',-1)" oncontextmenu="return false">&minus;</button>'+
+        '<div class="wert"><div class="zahl" id="z-'+u.id+'">'+fmt(a.wert)+
+          '<span class="einheit">'+esc(u.einheit)+'</span></div>'+
+          '<span id="i-'+u.id+'">'+infoZeile(u.id)+'</span></div>'+
+        '<button class="step" onpointerdown="halten(event,\''+u.id+'\',1)" oncontextmenu="return false">+</button>'+
+      '</div>';
+
+    if(u.typ==='pyramide'){
+      const h=haelften(u);
+      const zeichen=['○','✓','⚠'];
+      koerper += h.map((teil,i)=>
+        '<button class="halbe '+KL[a.status[i]]+'" onclick="satz(\''+u.id+'\','+i+')">'+
+          '<div class="folge">'+(i+1)+'</div>'+
+          '<div class="mitte"><div class="t1">'+teil.titel+'</div>'+
+            '<div class="t2">'+teil.folge+' · '+teil.wdh+' Wiederholungen</div></div>'+
+          '<div class="haken">'+zeichen[a.status[i]]+'</div>'+
+        '</button>').join('')+
+        '<div class="summe">'+
+          '<div class="lbl">Wiederholungen gesamt<br>bei Abbruch hier anpassen</div>'+
+          '<button onpointerdown="halten(event,\''+u.id+'\',-1,\'wdh\')" oncontextmenu="return false">&minus;</button>'+
+          '<div class="zahl" id="w-'+u.id+'">'+a.wdh+'</div>'+
+          '<button onpointerdown="halten(event,\''+u.id+'\',1,\'wdh\')" oncontextmenu="return false">+</button>'+
+        '</div>';
     }else{
-      koerper =
-        '<div class="zeile">'+
-          '<button class="step" onpointerdown="halten(event,\''+u.id+'\',-1)" oncontextmenu="return false">&minus;</button>'+
-          '<div class="wert"><div class="zahl" id="z-'+u.id+'">'+fmt(a.wert)+
-            '<span class="einheit">'+u.einheit+'</span></div>'+
-            '<span id="i-'+u.id+'">'+infoZeile(u.id)+'</span></div>'+
-          '<button class="step" onpointerdown="halten(event,\''+u.id+'\',1)" oncontextmenu="return false">+</button>'+
-        '</div>'+
-        '<div class="saetze">'+a.status.map((s,i)=>
-          '<button class="satz '+KLASSEN[s]+'" onclick="satz(\''+u.id+'\','+i+')">'+
-          (s===0 ? 'Satz '+(i+1) : BESCHR[s])+'</button>').join('')+'</div>';
+      if(u.waerme) koerper += '<div class="saetze"><button class="satz waerme'+(a.waerme?' ok':'')+
+        '" onclick="waermeUm(\''+u.id+'\')">'+(a.waerme?'✓ aufgewärmt':'Aufwärmsatz leicht')+'</button></div>';
+      koerper += '<div class="saetze">'+a.status.map((s,i)=>
+        '<button class="satz '+KL[s]+'" onclick="satz(\''+u.id+'\','+i+')">'+
+        (s===0?'Satz '+(i+1):BESCHR[s])+'</button>').join('')+'</div>';
     }
 
-    return '<div class="karte '+(hatHart?'warn':(alleFertig?'fertig':''))+'">'+
-      '<div class="kopf"><div class="name">'+u.name+'</div><div class="schema">'+u.schema+'</div></div>'+
-      koerper+
-      (hatHart ? '<div class="legende">Nächstes Mal gleiches Gewicht — erst sauber schaffen, dann steigern.</div>' : '')+
+    return '<div class="karte '+(hart?'warn':(alle?'fertig':''))+'">'+
+      '<div class="kopf"><div class="txt"><div class="name">'+esc(u.name)+'</div>'+
+        '<div class="schema">'+esc(u.schema)+'</div></div>'+
+        '<button class="mehr" onclick="menueUm(\''+u.id+'\')">⋯</button></div>'+
+      menue+koerper+
+      (hart?'<div class="legende">Nächstes Mal gleiches Gewicht — erst sauber schaffen.</div>':'')+
+      (!angefasst?'<div class="legende">Noch nicht gemacht — erscheint nicht in der Zusammenfassung.</div>':'')+
     '</div>';
   }).join('');
 }
 
-/* ---------- Werte ändern ---------- */
-function wert(id,d,idx){
-  const u = plaene[plan].find(x=>x.id===id), a = aktuell[id];
-  if(u.typ === 'wdh'){
-    a.werte[idx] = Math.max(0, a.werte[idx] + d);
-    const z = document.getElementById('z-'+id+'-'+idx);
-    if(z) z.textContent = a.werte[idx];
-  }else{
-    a.wert = Math.max(0, Math.round((a.wert + d)*10)/10);
-    const z = document.getElementById('z-'+id);
-    if(z) z.innerHTML = fmt(a.wert)+'<span class="einheit">'+u.einheit+'</span>';
+/* ---------- Werte ---------- */
+function wert(id,richtung,feld){
+  const u=heute.find(x=>x.id===id), a=aktuell[id];
+  if(feld==='wdh'){
+    a.wdh=Math.max(0, a.wdh+richtung);
+    const w=document.getElementById('w-'+id);
+    if(w) w.textContent=a.wdh;
+    return;
   }
-  const i = document.getElementById('i-'+id);
-  if(i) i.innerHTML = infoZeile(id);
+  const s=Number(u.schritt)||1;
+  a.wert=Math.max(0, Math.round((a.wert+richtung*s)*10)/10);
+  const z=document.getElementById('z-'+id);
+  if(z) z.innerHTML=fmt(a.wert)+'<span class="einheit">'+esc(u.einheit)+'</span>';
+  const i=document.getElementById('i-'+id);
+  if(i) i.innerHTML=infoZeile(id);
 }
-
-let haltTimer=null, haltIntervall=null;
-function halten(ev,id,richtung,idx){
+let hT=null,hI=null;
+function halten(ev,id,richtung,feld){
   ev.preventDefault();
-  tonFreischalten();
-  wert(id,richtung,idx);
-  haltTimer = setTimeout(()=>{ haltIntervall = setInterval(()=>wert(id,richtung,idx), 90); }, 500);
+  wert(id,richtung,feld);
+  hT=setTimeout(()=>{ hI=setInterval(()=>wert(id,richtung,feld), 90); }, 500);
 }
-function loslassen(){
-  if(haltTimer || haltIntervall) entwurfSichern();
-  clearTimeout(haltTimer); clearInterval(haltIntervall);
-  haltTimer = haltIntervall = null;
-}
+function loslassen(){ if(hT||hI) entwurfSichern(); clearTimeout(hT); clearInterval(hI); hT=hI=null; }
 window.addEventListener('pointerup', loslassen);
 window.addEventListener('pointercancel', loslassen);
 
+function waermeUm(id){ aktuell[id].waerme = aktuell[id].waerme?0:1; zeichnen(); entwurfSichern(); }
 function satz(id,i){
-  const st = aktuell[id].status;
-  st[i] = (st[i]+1)%3;
-  zeichnen(); entwurfSichern();
-  if(st[i] > 0) timerStart();
-}
-
-/* ---------- Pausentimer ---------- */
-let rest = PAUSE, timerId = null, audio = null;
-function tonFreischalten(){
-  if(!audio){
-    try{ audio = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  const u=heute.find(x=>x.id===id), a=aktuell[id];
+  a.status[i]=(a.status[i]+1)%3;
+  if(u.typ==='pyramide'){
+    const h=haelften(u);
+    a.wdh = h.reduce((sum,teil,k)=> sum + (a.status[k]>0 ? teil.wdh : 0), 0);
   }
-  if(audio && audio.state === 'suspended') audio.resume();
-}
-function piep(){
-  if(!audio) return;
-  [0,0.28].forEach(v=>{
-    const o = audio.createOscillator(), g = audio.createGain();
-    o.frequency.value = 880; o.connect(g); g.connect(audio.destination);
-    g.gain.setValueAtTime(0.0001, audio.currentTime+v);
-    g.gain.exponentialRampToValueAtTime(0.25, audio.currentTime+v+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime+v+0.2);
-    o.start(audio.currentTime+v); o.stop(audio.currentTime+v+0.22);
-  });
-}
-function timerStart(){
-  tonFreischalten();
-  rest = PAUSE;
-  timerbox.classList.add('an');
-  uhrZeigen();
-  clearInterval(timerId);
-  timerId = setInterval(()=>{
-    rest--; uhrZeigen();
-    if(rest <= 0){ piep(); timerStop(); }
-  }, 1000);
-}
-function timerPlus(s){ rest += s; uhrZeigen(); }
-function timerStop(){ clearInterval(timerId); timerId=null; timerbox.classList.remove('an'); }
-function uhrZeigen(){
-  const m = Math.floor(Math.max(rest,0)/60), s = Math.max(rest,0)%60;
-  uhr.textContent = m + ':' + String(s).padStart(2,'0');
-  uhr.style.color = rest <= 10 ? 'var(--signal)' : 'var(--chalk)';
+  zeichnen(); entwurfSichern();
 }
 
-/* ---------- Training speichern ---------- */
+/* ---------- Übungen für heute ---------- */
+function menueUm(id){ offenesMenue = offenesMenue===id ? null : id; zeichnen(); }
+
+function bibliothek(){
+  const liste=[];
+  ['A','B'].forEach(p=>plaene[p].forEach(u=>{ if(!liste.some(x=>x.name===u.name)) liste.push(u); }));
+  ERSATZ.forEach(u=>{ if(!liste.some(x=>x.name===u.name)) liste.push(u); });
+  return liste;
+}
+function neueId(){ return 'u'+Date.now()+Math.floor(Math.random()*99); }
+
+function ersetzenStarten(id){
+  const idx=heute.findIndex(u=>u.id===id);
+  auswahlZeigen('Ersetzen durch', v=>{
+    const a=aktuell[id];
+    delete aktuell[id];
+    heute[idx]=v;
+    aktuell[v.id]=standFuer(v);
+    offenesMenue=null; zeichnen(); entwurfSichern();
+  });
+}
+function heuteHinzu(){
+  auswahlZeigen('Hinzufügen', v=>{
+    heute.push(v); aktuell[v.id]=standFuer(v);
+    zeichnen(); entwurfSichern();
+    window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+  });
+}
+function heuteWeg(idx){
+  const u=heute[idx];
+  delete aktuell[u.id]; heute.splice(idx,1);
+  offenesMenue=null; zeichnen(); entwurfSichern();
+}
+function verschiebenHeute(i,d){
+  const j=i+d; if(j<0||j>=heute.length) return;
+  [heute[i],heute[j]]=[heute[j],heute[i]];
+  zeichnen(); entwurfSichern();
+}
+
+let auswahlZiel=null;
+function auswahlZeigen(titelText, rueckgabe){
+  auswahlZiel=rueckgabe;
+  const liste=bibliothek();
+  const html='<div class="karte"><div class="name">'+titelText+'</div>'+
+    '<div class="auswahl">'+liste.map((u,i)=>
+      '<button onclick="auswahlNehmen('+i+')">'+esc(u.name)+' <span style="color:var(--muted)">· '+esc(u.schema)+'</span></button>').join('')+
+    '</div><div class="menue">'+
+      '<button onclick="auswahlNeu()">Neue Übung …</button>'+
+      '<button onclick="auswahlAus()">Abbrechen</button>'+
+    '</div></div>';
+  uebungen.insertAdjacentHTML('afterbegin', html);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function auswahlNehmen(i){
+  const v=kopie(bibliothek()[i]);
+  v.id=neueId(); v.schritt=v.schritt||1; v.typ=v.typ||'gewicht'; v.saetze=v.saetze||3;
+  auswahlAus(); auswahlZiel(v);
+}
+function auswahlNeu(){
+  const n=prompt('Name der Übung:'); if(!n) return;
+  const v={id:neueId(), name:n, schema:'3 × 12', wert:20, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'};
+  auswahlAus(); auswahlZiel(v);
+}
+function auswahlAus(){ auswahlZiel=null; zeichnen(); }
+
+/* ---------- Speichern ---------- */
 function speichern(){
-  const eintrag = { datum:new Date().toISOString().slice(0,10), plan, woche, uebungen:[] };
-  plaene[plan].forEach(u=>{
-    const a = aktuell[u.id], sauber = !a.status.some(s=>s===2);
-    if(u.typ === 'wdh'){
-      eintrag.uebungen.push({id:u.id, name:u.name, saetze:a.werte.slice(), wert:a.werte.reduce((x,y)=>x+y,0), einheit:u.einheit, sauber});
-      letzte[u.id] = {wert:a.werte.reduce((x,y)=>x+y,0), saetze:a.werte.slice(), sauber};
-    }else{
-      eintrag.uebungen.push({id:u.id, name:u.name, wert:a.wert, einheit:u.einheit, sauber});
-      letzte[u.id] = {wert:a.wert, sauber};
-    }
-  });
-  verlauf.unshift(eintrag);
-  verlauf = verlauf.slice(0,60);
+  const gemacht = heute.filter(u=>aktuell[u.id] && aktuell[u.id].status.some(s=>s>0));
+  if(!gemacht.length){ alert('Noch kein Satz angetippt — es gibt nichts zu speichern.'); return; }
 
-  plan  = plan==='A' ? 'B' : 'A';
-  woche = plan==='A' ? (woche%4)+1 : woche;
-  entwurf = null;
+  const eintrag={datum:new Date().toISOString().slice(0,10), plan, uebungen:[], notiz:notizText.trim()};
+  gemacht.forEach(u=>{
+    const a=aktuell[u.id], sauber=!a.status.some(s=>s===2);
+    const satz={id:u.id, name:u.name, wert:a.wert, einheit:u.einheit, sauber};
+    if(u.typ==='pyramide'){
+      satz.wdh=a.wdh;
+      letzte[u.id]={wert:a.wert, wdh:satz.wdh, sauber};
+    }else{
+      satz.saetze=a.status.filter(s=>s>0).length;
+      letzte[u.id]={wert:a.wert, sauber};
+    }
+    eintrag.uebungen.push(satz);
+  });
+
+  verlauf.unshift(eintrag);
+  verlauf=verlauf.slice(0,60);
+  plan = plan==='A' ? 'B' : 'A';
+  entwurf=null; notizText=''; document.getElementById('notiz').value='';
   ablegen();
 
   speicherbtn.textContent='✓ Gespeichert';
   speicherbtn.classList.add('ok');
   setTimeout(()=>{ speicherbtn.textContent='Training speichern'; speicherbtn.classList.remove('ok'); },2000);
 
-  timerStop();
-  verlaufZeichnen(); kurvenZeichnen();
-  planWaehlen(plan);
+  verlaufZeichnen(); kurvenZeichnen(); abstandZeigen(); planWaehlen(plan);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 /* ---------- Verlauf & Kurven ---------- */
 function verlaufZeichnen(){
-  const ziel = document.getElementById('verlauf');
-  if(!verlauf.length){
-    ziel.innerHTML='<div class="eintrag"><span>Noch nichts gespeichert.</span></div>'; return;
-  }
-  ziel.innerHTML = verlauf.slice(0,12).map(e=>{
-    const d = e.datum.split('-').reverse().slice(0,2).join('.');
-    const z = e.uebungen.map(u=>u.name.split(' ')[0]+' '+fmt(u.wert)+(u.sauber?'':' ⚠')).join(' · ');
-    return '<div class="eintrag"><b>'+d+' · PLAN '+e.plan+' · WOCHE '+e.woche+'</b><br><span>'+z+'</span></div>';
+  const ziel=document.getElementById('verlauf');
+  if(!verlauf.length){ ziel.innerHTML='<div class="eintrag"><span>Noch nichts gespeichert.</span></div>'; return; }
+  ziel.innerHTML=verlauf.slice(0,12).map(e=>{
+    const d=e.datum.split('-').reverse().slice(0,2).join('.');
+    const z=e.uebungen.map(u=>u.name.split(' ')[0]+' '+fmt(u.wert)+(u.wdh!==undefined?'/'+u.wdh+'W':'')+(u.sauber?'':' ⚠')).join(' · ');
+    return '<div class="eintrag"><b>'+d+' · PLAN '+e.plan+'</b><br><span>'+z+'</span>'+
+      (e.notiz?'<br><i>'+esc(e.notiz)+'</i>':'')+'</div>';
   }).join('');
 }
-
 function kurvenZeichnen(){
-  const ziel = document.getElementById('kurven');
-  const reihen = {};
-  verlauf.slice().reverse().forEach(e=>{
-    e.uebungen.forEach(u=>{
-      const id = u.id || u.name;
-      (reihen[id] = reihen[id] || {name:u.name, einheit:u.einheit, werte:[]}).werte.push(u.wert);
-    });
-  });
-  const brauchbar = Object.values(reihen).filter(r=>r.werte.length >= 2);
-  if(!brauchbar.length){
-    ziel.innerHTML = '<div class="eintrag"><span>Ab dem zweiten gespeicherten Training erscheinen hier Kurven.</span></div>';
-    return;
-  }
-  ziel.innerHTML = brauchbar.map(r=>{
-    const min = Math.min(...r.werte), max = Math.max(...r.werte), spanne = (max-min) || 1;
-    const n = r.werte.length;
-    const pkt = r.werte.map((w,i)=>{
-      const x = n===1 ? 50 : (i/(n-1))*96 + 2;
-      const y = 46 - ((w-min)/spanne)*40;
-      return [x,y];
-    });
-    const linie = pkt.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
-    const punkte = pkt.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="1.6" fill="#F2C200"/>').join('');
-    const jetzt = r.werte[r.werte.length-1], start = r.werte[0];
-    const diff = jetzt - start;
-    const trend = diff > 0 ? '▲ +'+fmt(diff) : (diff < 0 ? '▼ '+fmt(diff) : '→ gleich');
-    return '<div class="kurve">'+
-      '<div class="kn"><span>'+r.name+'</span><span class="kv">'+fmt(jetzt)+' '+r.einheit+' · '+trend+'</span></div>'+
-      '<svg viewBox="0 0 100 50" preserveAspectRatio="none">'+
-        '<polyline points="'+linie+'" fill="none" stroke="#F2C200" stroke-width="1.4" '+
-        'stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>'+punkte+
-      '</svg></div>';
+  const ziel=document.getElementById('kurven'), reihen={};
+  verlauf.slice().reverse().forEach(e=>e.uebungen.forEach(u=>{
+    const id=u.id||u.name;
+    const r=reihen[id]=reihen[id]||{name:u.name, einheit:u.einheit, werte:[], pyr:u.wdh!==undefined};
+    r.werte.push(u.wdh!==undefined ? u.wdh : u.wert);
+    if(u.wdh!==undefined) r.einheit='Wdh';
+  }));
+  const gut=Object.values(reihen).filter(r=>r.werte.length>=2);
+  if(!gut.length){ ziel.innerHTML='<div class="eintrag"><span>Ab dem zweiten gespeicherten Training erscheinen hier Kurven.</span></div>'; return; }
+  ziel.innerHTML=gut.map(r=>{
+    const min=Math.min(...r.werte), max=Math.max(...r.werte), sp=(max-min)||1, n=r.werte.length;
+    const pkt=r.werte.map((w,i)=>[(n===1?50:(i/(n-1))*96+2), 46-((w-min)/sp)*40]);
+    const linie=pkt.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+    const punkte=pkt.map(p=>'<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="1.6" fill="#F2C200"/>').join('');
+    const diff=r.werte[n-1]-r.werte[0];
+    const trend=diff>0?'▲ +'+fmt(diff):(diff<0?'▼ '+fmt(diff):'→ gleich');
+    return '<div class="kurve"><div class="kn"><span>'+esc(r.name)+'</span>'+
+      '<span class="kv">'+fmt(r.werte[n-1])+' '+esc(r.einheit)+' · '+trend+'</span></div>'+
+      '<svg viewBox="0 0 100 50" preserveAspectRatio="none"><polyline points="'+linie+'" fill="none" '+
+      'stroke="#F2C200" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" '+
+      'vector-effect="non-scaling-stroke"/>'+punkte+'</svg></div>';
   }).join('');
 }
 
-/* ---------- Übungen bearbeiten ---------- */
+/* ---------- Dauerhaft bearbeiten ---------- */
 function bearbZeichnen(){
-  document.getElementById('bearbliste').innerHTML = plaene[plan].map((u,i)=>
+  document.getElementById('bearbliste').innerHTML=plaene[plan].map((u,i)=>
     '<div class="bearb">'+
-      '<input value="'+esc(u.name)+'" oninput="bearbSetzen('+i+',\'name\',this.value)" placeholder="Name der Übung">'+
+      '<input value="'+esc(u.name)+'" oninput="bSetz('+i+',\'name\',this.value)" placeholder="Name">'+
       '<div class="reihe">'+
-        '<input value="'+esc(u.schema)+'" oninput="bearbSetzen('+i+',\'schema\',this.value)" placeholder="z. B. 3 × 12">'+
-        '<input value="'+esc(u.einheit)+'" oninput="bearbSetzen('+i+',\'einheit\',this.value)" placeholder="kg">'+
+        '<input value="'+esc(u.schema)+'" oninput="bSetz('+i+',\'schema\',this.value)" placeholder="3 × 12">'+
+        '<input value="'+esc(u.einheit)+'" oninput="bSetz('+i+',\'einheit\',this.value)" placeholder="kg">'+
       '</div>'+
       '<div class="reihe">'+
-        '<input type="number" value="'+u.saetze+'" min="1" max="8" oninput="bearbSetzen('+i+',\'saetze\',this.value)" placeholder="Sätze">'+
-        '<select onchange="bearbSetzen('+i+',\'typ\',this.value)">'+
-          '<option value="gewicht"'+(u.typ==='gewicht'?' selected':'')+'>Gewicht</option>'+
-          '<option value="wdh"'+(u.typ==='wdh'?' selected':'')+'>Wdh je Satz</option>'+
+        '<input type="number" value="'+u.wert+'" oninput="bSetz('+i+',\'wert\',this.value)" placeholder="Startwert">'+
+        '<input type="number" step="0.5" value="'+u.schritt+'" oninput="bSetz('+i+',\'schritt\',this.value)" placeholder="Schritt">'+
+      '</div>'+
+      '<div class="reihe">'+
+        '<select onchange="bSetz('+i+',\'typ\',this.value)">'+
+          '<option value="gewicht"'+(u.typ==='gewicht'?' selected':'')+'>Sätze</option>'+
+          '<option value="pyramide"'+(u.typ==='pyramide'?' selected':'')+'>Pyramide</option>'+
         '</select>'+
+        (u.typ==='pyramide'
+          ? '<input type="number" min="2" max="12" value="'+(u.spitze||8)+'" oninput="bSetz('+i+',\'spitze\',this.value)" placeholder="Spitze">'
+          : '<input type="number" min="1" max="8" value="'+(u.saetze||3)+'" oninput="bSetz('+i+',\'saetze\',this.value)" placeholder="Sätze">')+
+      '</div>'+
+      '<div class="bfeld">'+
+        '<label><input type="checkbox" style="width:auto;margin-right:6px"'+(u.abwaerts?' checked':'')+
+          ' onchange="bSetz('+i+',\'abwaerts\',this.checked)"> weniger ist besser (z. B. Gegengewicht)</label><br>'+
+        '<label><input type="checkbox" style="width:auto;margin-right:6px"'+(u.waerme?' checked':'')+
+          ' onchange="bSetz('+i+',\'waerme\',this.checked)"> mit Aufwärmsatz</label>'+
       '</div>'+
       '<div class="werkzeug">'+
-        '<button onclick="verschieben('+i+',-1)">▲ hoch</button>'+
-        '<button onclick="verschieben('+i+',1)">▼ runter</button>'+
-        '<button class="warnen" onclick="uebungWeg('+i+')">löschen</button>'+
+        '<button onclick="bSchieb('+i+',-1)">▲ hoch</button>'+
+        '<button onclick="bSchieb('+i+',1)">▼ runter</button>'+
+        '<button class="warnen" onclick="bWeg('+i+')">löschen</button>'+
       '</div>'+
     '</div>').join('');
 }
-function esc(t){ return String(t).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function bearbSetzen(i,feld,wertNeu){
-  if(feld==='saetze') wertNeu = Math.max(1, Math.min(8, parseInt(wertNeu)||1));
-  plaene[plan][i][feld] = wertNeu;
+function bSetz(i,feld,v){
+  if(feld==='saetze') v=Math.max(1,Math.min(8,parseInt(v)||1));
+  if(feld==='spitze') v=Math.max(2,Math.min(12,parseInt(v)||8));
+  if(feld==='wert')   v=Math.max(0,parseFloat(v)||0);
+  if(feld==='schritt')v=Math.max(0.5,parseFloat(v)||1);
+  plaene[plan][i][feld]=v;
+  if(feld==='typ'||feld==='abwaerts'||feld==='waerme') bearbZeichnen();
 }
-function verschieben(i,d){
-  const l = plaene[plan], j = i+d;
-  if(j<0 || j>=l.length) return;
-  [l[i],l[j]] = [l[j],l[i]];
-  bearbZeichnen();
+function bSchieb(i,d){
+  const l=plaene[plan], j=i+d; if(j<0||j>=l.length) return;
+  [l[i],l[j]]=[l[j],l[i]]; bearbZeichnen();
 }
-function uebungWeg(i){
-  if(!confirm('„'+plaene[plan][i].name+'" wirklich entfernen?')) return;
-  plaene[plan].splice(i,1);
-  bearbZeichnen();
+function bWeg(i){
+  if(!confirm('„'+plaene[plan][i].name+'" dauerhaft entfernen?')) return;
+  plaene[plan].splice(i,1); bearbZeichnen();
 }
 function uebungHinzu(){
-  plaene[plan].push({id:'u'+Date.now(), name:'Neue Übung', schema:'3 × 12', wert:20, einheit:'kg', saetze:3, typ:'gewicht'});
+  plaene[plan].push({id:neueId(), name:'Neue Übung', schema:'3 × 12', wert:20, schritt:1, einheit:'kg', saetze:3, typ:'gewicht'});
   bearbZeichnen();
 }
 function bearbSpeichern(){
-  const stand = aktuell;
-  aktuell = frischerStand(plan);
-  Object.keys(stand).forEach(id=>{ if(aktuell[id]) aktuell[id] = stand[id]; });
-  plaene[plan].forEach(u=>{ if(!aktuell[u.id]) aktuell[u.id] = frischerStand(plan)[u.id]; });
-  ablegen(); zeichnen(); bearbZeichnen();
-  document.getElementById('bearbeiten').open = false;
+  ablegen();
+  const alt=aktuell;
+  heute=kopie(plaene[plan]);
+  aktuell=standAufbauen();
+  Object.keys(alt).forEach(id=>{ if(aktuell[id]) aktuell[id]=alt[id]; });
+  zeichnen(); bearbZeichnen();
+  document.getElementById('bearbeiten').open=false;
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function zuruecksetzen(){
   if(!confirm('Plan '+plan+' auf die Standardübungen zurücksetzen? Gespeicherte Trainings bleiben erhalten.')) return;
-  plaene[plan] = JSON.parse(JSON.stringify(STANDARD[plan]));
-  aktuell = frischerStand(plan);
+  plaene[plan]=kopie(STANDARD[plan]);
+  heute=kopie(plaene[plan]); aktuell=standAufbauen();
   ablegen(); zeichnen(); bearbZeichnen();
 }
 
 /* ---------- Sicherung ---------- */
 function sichern(){
-  const daten = localStorage.getItem(KEY) || '{}';
-  navigator.clipboard.writeText(daten)
+  const d=localStorage.getItem(KEY)||'{}';
+  navigator.clipboard.writeText(d)
     .then(()=>alert('Daten kopiert. In eine Notiz einfügen — das ist deine Sicherung.'))
-    .catch(()=>prompt('Diesen Text kopieren und sichern:', daten));
+    .catch(()=>prompt('Diesen Text kopieren und sichern:', d));
 }
 function wiederherstellen(){
-  const t = prompt('Gesicherte Daten hier einfügen:');
-  if(!t) return;
-  try{ JSON.parse(t); localStorage.setItem(KEY, t); location.reload(); }
+  const t=prompt('Gesicherte Daten hier einfügen:'); if(!t) return;
+  try{ JSON.parse(t); localStorage.setItem(KEY,t); location.reload(); }
   catch(e){ alert('Das war kein gültiger Sicherungstext.'); }
 }
 
-/* ---------- Ungespeichertes ---------- */
 window.addEventListener('beforeunload', e=>{
-  const offen = Object.values(aktuell).some(a=>a.status.some(s=>s>0));
-  if(offen){ entwurfSichern(); e.preventDefault(); e.returnValue=''; }
+  if(Object.values(aktuell).some(a=>a.status.some(s=>s>0))){ entwurfSichern(); e.preventDefault(); e.returnValue=''; }
 });
 document.addEventListener('visibilitychange', ()=>{ if(document.hidden) entwurfSichern(); });
 
